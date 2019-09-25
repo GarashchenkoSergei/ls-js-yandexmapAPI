@@ -1,0 +1,148 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  height: 100vh;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.review-popup {
+  display: block;
+  height: 530px;
+  width: 380px;
+  background-color: #fff;
+  border-radius: 20px;
+  position: relative;
+}
+
+.review-popup__header {
+  height: 45px;
+  background-color: #ff8663;
+  border-radius: 20px 20px 0 0;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 30px 0 12px;
+}
+
+.review-popup__reviews {
+  height: 155px;
+  width: 100%;
+  padding: 0 15px;
+}
+
+.reviews-content {
+  width: 100%;
+  height: 100%;
+  border-bottom: solid 1px rgba(196, 196, 196, 0.7);
+  overflow: auto;
+}
+
+.reviews-item {
+  margin: 20px 0;
+}
+
+.reviews-item__title{
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.reviews-item__content{
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: grey;
+}
+
+#review-info {
+  padding: 0 15px;
+  text-align: right;
+}
+
+.form-name {
+  color: #ff8663;
+  margin: 15px 0;
+  text-align: left;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 15px;
+  border: solid 1px;
+  border-color: rgba(196, 196, 196, 0.7);
+  border-radius: 20px;
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.form-field::placeholder {
+  color: rgba(196, 196, 196, 1);
+}
+
+.form-review__text {
+  height: 115px;
+  resize: none;
+}
+
+#form-submit__button {
+  padding: 7px 12px;
+  background-color: rgba(246, 242, 242, 0.76);
+  color: #ff8663;
+  border: solid 1px rgba(246, 242, 242, 1);
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+#form-submit__button:hover {
+  cursor: pointer;
+}
+
+#form-submit__button:active {
+  color: rgba(246, 242, 242, 0.76);
+  background-color: #ff8663;
+}
+
+.close {
+  text-decoration: none;
+  color: #fff;
+  font-size: 25px;
+  position: absolute;
+  display: block;
+  top: 8px;
+  right: 17px;
+}
+
+.review-item {
+  margin: 5px 0 0 10px;
+}
+
+.time {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 12px;
+}
+
+.place {
+  font-weight: bold;
+}
+
+.comment {
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 12px;
+}
