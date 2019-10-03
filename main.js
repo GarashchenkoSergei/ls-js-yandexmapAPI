@@ -20,12 +20,16 @@ function init() {
       '<div class="review-popup__header">{{ properties.address }}</div>' +
       '<a class="close" href="#">&times;</a>' +
       '<div class="review-popup__reviews">' +
-        '<div class="reviews-content">' +
-          '<div class="review-item">{{ properties.name }}</div>' +
-          '<div class="review-item time">{{ properties.time }}</div>' +
-          '<div class="review-item place">{{ properties.place }}</div>' +
-          '<div class="review-item comment">{{ properties.comment }}</div>' +
-        '</div>' +
+        '<ul class="reviews-content">' +
+          '<li class="reviews-content__item">' +
+            // '{% for prop in placemarksProps %}' +
+            '<div class="review-item">{{ properties.name }}</div>' +
+            // '{% endfor %}' +
+            '<div class="review-item time">{{ properties.time }}</div>' +
+            '<div class="review-item place">{{ properties.place }}</div>' +
+            '<div class="review-item comment">{{ properties.comment }}</div>' +
+          '</li>' +
+        '</ul>' +
       '</div>' +
       '<form action="" id="review-info">' +
         '<h4 class="form-name">ВАШ ОТЗЫВ</h4>' +
@@ -64,6 +68,7 @@ function init() {
             return geoObject.getAddressLine();
         }).then((result) => {
           sendInfo(result);
+          myMap.geoObjects.add(myPlacemark);
         });
 
         function sendInfo(address) {
@@ -75,6 +80,10 @@ function init() {
             comment: commentInput.value,
             time: new Date().toLocaleString()
           };
+
+          if ( !review.address || !review.coords || !review.name || !review.place || !review.comment ) {
+            return alert('Не все поля заполнены');
+          }
   
           if (localStorage.length) {
             for (let i = 0; i < localStorage.length; i++) {
@@ -98,11 +107,32 @@ function init() {
       }
   });
 
+  var reviewContentLayout = ymaps.templateLayoutFactory.createClass(
+    '<li class="reviews-content__item">' +
+      '<div class="review-item">{{ properties.name }}</div>' +
+      '<div class="review-item time">{{ properties.time }}</div>' +
+      '<div class="review-item place">{{ properties.place }}</div>' +
+      '<div class="review-item comment">{{ properties.comment }}</div>' +
+    '</li>'
+  );
+
   var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
-    // Флаг "raw" означает, что данные вставляют "как есть" без экранирования html.
     '<h2 class=ballon_header>{{ properties.place }}</h2>' +
-      '<div class=ballon_body><a href="#">{{ properties.address }}</a></div>' +
-      '<div class=ballon_footer>{{ properties.comment }}</div>'
+      '<div class=ballon_body><a href="#" id="address-link">{{ properties.address }}</a></div>' +
+      '<div class=ballon_footer>{{ properties.comment }}</div>', {
+        build: function () {
+          customItemContentLayout.superclass.build.call(this);
+          $('#address-link').bind('click', this.onAddressClick);
+        },
+        clear: function () {
+          $('#address-link').unbind('click', this.onAddressClick);
+          customItemContentLayout.superclass.clear.call(this);
+        },
+        onAddressClick: function (event) {
+          event.preventDefault();
+          openBalloon(event);
+        }
+      }
   );
 
   var clusterer = new ymaps.Clusterer({
@@ -132,7 +162,7 @@ function init() {
       placemarks.push(placemark);
     }
   }
-  
+
   clusterer.add(placemarks);
   myMap.geoObjects.add(clusterer);
 
@@ -167,6 +197,25 @@ function init() {
       balloonLayout: myBalloonContentBodyLayout,
       balloonPanelMaxMapArea: 0,
       iconLayout: 'default#image',
+      hideIconOnBalloonOpen: false,
     });
+  }
+
+  var placemarksProps = [];
+  for (let placemark of placemarks) {
+    var prop = placemark.properties.getAll()
+    placemarksProps.push(prop)
+  }
+
+  //идея обрабатывать все данные и перезаписывать новую метку этой функией. Под нее сделать новый балун, такой же как старый, но с циклами для отзывов. В метке изменить данные на массивы.
+  function openBalloon(event) {
+    for (let placemark of placemarks) {
+      console.log(placemark.properties.getAll())
+      if (event.target.textContent == placemark.properties.get('address')) {
+        
+        // console.log(placemark.properties.get('address'));
+      }
+    }
+    myMap.balloon.open()
   }
 }
